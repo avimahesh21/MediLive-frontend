@@ -11,11 +11,11 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 
 function App() {
+  const [isListening, setIsListening] = useState(true);
   const [trigger, setTrigger] = useState(true);
   const [speaking, setSpeaking] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
   const [voiceText, setVoiceText] = useState(null);
-  const [response, setResponse] = useState(null);
   const {
     transcript,
     listening,
@@ -26,29 +26,73 @@ function App() {
   const startListening = () =>
     SpeechRecognition.startListening({ continuous: true });
 
+    
   useEffect(() => {
-    if (trigger == true){
-      //call backend (openai) and get question
-      //call backend (openai) and get tts file
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser does not support speech recognition.");
+      return;
+    }
 
-      //set audio url
-      setSpeaking(true);
-      setVoiceText("Hi, this is from openAi")
-      //setSpeaking(true);
-      //set voice text
-      //start lisetning
+    if (trigger == true) {
+      fetchFirstQuestion();
     }
   }, [trigger]);
 
-  useEffect(() => {
-    //use response and get voice text from openai
-    
-    //set audio url
-    setSpeaking(true);
-    setVoiceText("Follow up question")
-    //start listening
 
-  }, [response]);
+  const fetchFirstQuestion = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/firstQuestion');
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      setVoiceText(data.question);
+      //make audio url
+      //set audio url
+      setSpeaking(true);
+      startListening();// Start listening after setting the question
+    } catch (error) {
+      console.error('Failed to fetch question:', error);
+    }
+  };
+
+  const [isUserSpeaking, setIsUserSpeaking] = useState(false);
+  const silenceTimer = useRef(null);
+  useEffect(() => {
+    if (transcript) {
+      setIsUserSpeaking(true);
+      clearTimeout(silenceTimer.current);
+
+      silenceTimer.current = setTimeout(() => {
+        setIsUserSpeaking(false);
+        console.log(transcript)
+        fetchFollowUp(transcript);
+      }, 3000); // 4 sec of silence untill it auto submits
+    }
+  }, [transcript]);
+
+
+  const fetchFollowUp = async (userResponse) => {
+    try {
+      const response = await fetch('http://localhost:3001/followUp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userResponse: userResponse }),
+    });
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      setVoiceText(data.question);
+      //make audio url
+      //set audio url
+      setSpeaking(true);
+      //start lisetning
+      setIsListening(true);
+      resetTranscript();
+    } catch (error) {
+      console.error('Failed to fetch question:', error);
+    }
+  };
+  
 
 
   useEffect(() => {
@@ -56,13 +100,12 @@ function App() {
       const audio = new Audio(audioUrl);
       audio.playbackRate = 1.17;
 
-      
+
       // Event handler for when audio stops playing
       audio.onended = () => {
         setSpeaking(false);
+        startListening();
       }
-        
-          startListening();
       // Ensure that the audio is loaded before attempting to play it
       audio.addEventListener("canplaythrough", () => {
         setSpeaking(true);
@@ -93,6 +136,7 @@ function App() {
               <Nurse speaking={speaking} />
               <div className="question text-center mt-auto">
                 <Typewriter
+                  key={voiceText} // Add this line
                   options={{
                     delay: 20,
                   }}
