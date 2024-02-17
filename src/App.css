@@ -9,11 +9,24 @@
   height: 40vmin;
   pointer-events: none;
 }
+.question {
+  font-size: 135%;
+  margin-bottom: 1.5%;
+  padding-top: 2%;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.webcam-overlay {
+  position: absolute;
+  bottom: 8%; /* Adjust as needed */
+  right: 2%; /* Adjust as needed */
+  width: 200px; /* Adjust based on desired size of overlay */
+  height: 150px; /* Adjust based on desired size of overlay */
 }
 
 .App-header {
