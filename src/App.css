@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+    background-color: #0e1117; /* Sets the background color of the app */
+    min-height: 100vh; /* Makes sure the app fills at least the full height of the viewport */
+    color: #fff; /* Adjusts the text color for better readability against the dark background */
 }
 
 .App-logo {
@@ -35,4 +38,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Add a grey light line above the footer */
+footer .col-12 {
+  border-top: 1px solid #8d838354; /* Light grey border */
 }
