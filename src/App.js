@@ -15,7 +15,7 @@ function App() {
         <div className="col-12">
           <div className="d-flex align-items-center py-2">
             <img src={logo} alt="Company Logo" className="me-2" style={{ height: '50px' }} />
-            <span className="h4 mb-0">MediCare</span>
+            <span className="h4 mb-0">MediLive</span>
           </div>
         </div>
       </header>
