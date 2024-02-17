@@ -21,28 +21,7 @@ function App() {
           <WebcamCap />
         </div>
         <div className="col-md-4">
-          <h3>Action Log</h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Action</th>
-                <th scope="col">Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Login</td>
-                <td>12:00 PM</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Viewed Page</td>
-                <td>12:05 PM</td>
-              </tr>
-            </tbody>
-          </table>
+         Action Log
         </div>
       </main>
 
