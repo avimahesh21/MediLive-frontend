@@ -5,12 +5,26 @@ import Nurse from './Nurse'; // Ensure this is correctly imported
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Typewriter from "typewriter-effect";
 import Footer from './Footer';
+import ActionLog from './ActionLog';
 import React, { useState, useEffect, useRef } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 
 function App() {
+  const [trigger, setTrigger] = useState(true);
+  const [alert, setAlert] = useState(null);
+
+  // Simulate an alert being received from some external source
+  const simulateAlert = () => {
+    // This is where you would get the actual alert data
+    // For demonstration, we're just creating a new Date string
+    const newAlert = {
+      message: `New alert at ${new Date().toLocaleTimeString()}`,
+    };
+    setAlert(newAlert);
+  };
+  
   const [trigger, setTrigger] = useState(true);
   const [speaking, setSpeaking] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
@@ -71,12 +85,10 @@ function App() {
       });
     }
   }, [audioUrl]);
-
-
-
-
+  
   return (
     <div className="App container-fluid vh-100 d-flex flex-column">
+
       <header className="row">
         <div className="col-12">
           <div className="d-flex align-items-center py-2">
@@ -111,9 +123,13 @@ function App() {
             </div>
           )}
         </div>
+
         <div className="col-md-4">
-          Action Log
+          <h1>Action Log</h1>
+          <button onClick={simulateAlert}>Simulate Action</button>
+          <ActionLog newAlert={alert} />
         </div>
+
       </main>
 
       < Footer />
