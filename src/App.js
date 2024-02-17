@@ -25,7 +25,6 @@ function App() {
     setAlert(newAlert);
   };
   
-  const [trigger, setTrigger] = useState(true);
   const [speaking, setSpeaking] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
   const [voiceText, setVoiceText] = useState(null);
