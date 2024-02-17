@@ -5,6 +5,7 @@ import WebcamCap from './WebcamCap';
 import Nurse from './Nurse'; // Ensure this is correctly imported
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Typewriter from "typewriter-effect";
+import Footer from './Footer';
 
 function App() {
   const [trigger, setTrigger] = useState(true);
@@ -50,13 +51,7 @@ function App() {
         </div>
       </main>
 
-      <footer className="row">
-        <div className="col-12">
-          <div className="py-3 text-center">
-            Footer content goes here
-          </div>
-        </div>
-      </footer>
+      < Footer />
     </div>
   );
 }
