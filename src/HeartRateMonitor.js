@@ -1,6 +1,36 @@
 import React, { useState, useEffect } from 'react';
 
 const HeartRateMonitor = () => {
+
+  const [data, setData] = useState('');
+
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8080');
+
+    ws.onopen = () => {
+      console.log('Connected to WebSocket');
+    };
+
+    ws.onmessage = (event) => {
+      // Update state with data received from WebSocket server
+      setData(event.data + " ");
+      updateHeartRate(event.data);
+    };
+
+    ws.onerror = (error) => {
+      console.log('WebSocket error: ', error);
+    };
+
+    ws.onclose = () => {
+      console.log('Disconnected from WebSocket');
+    };
+
+    // Clean up WebSocket connection when component unmounts
+    return () => {
+      ws.close();
+    };
+  }, []);
+
   const [points, setPoints] = useState([]);
   const maxX = 150; // Width of the SVG
   let lastX = -10; // Initial x-coordinate for the first point
@@ -11,21 +41,21 @@ const HeartRateMonitor = () => {
       lastX = 0; // Reset to start when reaching the end of the SVG
       setPoints([]); // Clear points to start over
     }
-    const y = Math.random() * 73; // Simulate a y-coordinate for demonstration
+    const y = newHeartRate/90 * 73; // Simulate a y-coordinate for demonstration
+    console.log(newHeartRate)
     setPoints(prevPoints => [...prevPoints, `${lastX},${y}`]);
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const newHeartRate = Math.random() * (120 - 60) + 60; // Random heart rate for demonstration
-      updateHeartRate(newHeartRate);
-    }, 100);
+      updateHeartRate(data);
+    }, 200);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="heart-rate">
-      <svg version="1.0" x="0px" y="0px" width="100px" height="43px" viewBox="0 0 150 73">
+      <svg version="1.0" x="0px" y="0px" width="100px" height="33px" viewBox="0 0 150 73">
         <polyline fill="none" stroke="#009B9E" stroke-width="3" stroke-miterlimit="10" points={points.join(' ')} />
       </svg>
     </div>

@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './redcross.png';
 import './App.css';
 import WebcamCap from './WebcamCap';
 import Nurse from './Nurse';
@@ -10,6 +10,7 @@ import React, { useState, useEffect, useRef } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import ArduinoData from './ArduinoData';
 import Face from './Face'
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
 
   const simulateAlert = (alert) => {
     const newAlert = {
+      id: Date.now(), // Ensure a unique ID for each alert
       message: alert + ` at ${new Date().toLocaleTimeString()}`,
     };
     setAlert(newAlert);
@@ -61,6 +63,7 @@ function App() {
 
 
   const fetchFirstQuestion = async (triggerDetails) => {
+
     try {
       const response = await fetch('http://localhost:3001/firstQuestion', {
         method: 'POST',
@@ -75,7 +78,7 @@ function App() {
       createAudioURL(data.buffer);
       setSpeaking(true);
       resetTranscript();
-      startListening();// Start listening after setting the question
+      simulateAlert("Contacted Medical Help");
     } catch (error) {
       console.error('Failed to fetch question:', error);
     }
@@ -137,6 +140,7 @@ function App() {
       audio.onended = () => {
         setSpeaking(false);
         resetTranscript();
+        startListening();
       }
 
       // Ensure that the audio is loaded before attempting to play it
@@ -149,15 +153,18 @@ function App() {
   console.log(trigger)
   return (
     <div className="App container-fluid vh-100 d-flex flex-column">
-      <Face trigger={trigger} setTrigger={setTrigger} />
-      <header className="row">
-        <div className="col-12">
+      <header className="row align-items-center">
+        <div className="col">
           <div className="d-flex align-items-center py-2">
             <img src={logo} alt="Company Logo" className="me-2" style={{ height: '50px' }} />
             <span className="h4 mb-0">MediLive</span>
           </div>
         </div>
+        <div className="col text-end">
+          <p className="mb-0">Monitoring Patient: {patientName}</p>
+        </div>
       </header>
+
 
       <main className="row flex-grow-1">
         <div className="col-md-8 position-relative d-flex flex-column">
@@ -167,7 +174,7 @@ function App() {
                 <Nurse speaking={speaking} />
                 {trigger && (
                   <div className="webcam-overlay">
-                    <WebcamCap />
+                    <WebcamCap></WebcamCap>
                   </div>
                 )}
               </div>
@@ -185,14 +192,18 @@ function App() {
                 />
               </div>
             </>
-          ) : <WebcamCap />}
-         
+          ) : <div style={{ width: "50%" }}>
+            <Face trigger={trigger} setTrigger={setTrigger} />
+          </div>
+          }
+
         </div>
 
         <div className="col-md-4">
-          <h3>Action Log</h3>
+          <h4>Action Log</h4>
           <ActionLog newAlert={alert} />
         </div>
+
 
       </main>
 

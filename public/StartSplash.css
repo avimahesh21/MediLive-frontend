@@ -1,0 +1,103 @@
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome {
+  margin-bottom: 2%;
+  padding: 2%;
+  padding-top: 10%;
+  text-align: left;
+  font-size: 175%;
+  font-weight: bold;
+  color: #353535;
+}
+
+.label {
+  padding: 3%;
+  display: flex;
+  align-items: center; /* Vertically center the content */
+  font-size: 110%;
+  /* font-weight: bold; */
+  color: #353535;
+}
+
+.instructions {
+  padding: 1%;
+  display: flex;
+  align-items: center; /* Vertically center the content */
+  font-size: 95%;
+  /* font-weight: bold; */
+  color: #353535;
+}
+
+.instructionsHeader {
+  margin-bottom: 1%;
+  padding: 1%;
+  text-align: left;
+  font-size: 150%;
+  font-weight: bold;
+  color: #353535;
+}
+
+.bubble {
+  align-items: center;
+  width: 50%;
+  /* background-color: #f0f0f0; */
+  border-radius: 1rem;
+}
+
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 65vh;
+}
+
+.btn-custom-start {
+  font-weight: bold;
+  background-color: #4a4a4a;
+  color: #eee;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.btn-custom-start:hover {
+  background-color: #404040;
+  color: #cbcbcb;
+}
+
+.r-al {
+  display: flex;
+  align-items: right;
+  justify-content: right;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.m-left {
+  margin-left: 1rem;
+}
+
+/* Media query for smaller screens (e.g., mobile devices) */
+@media (max-width: 768px) {
+  .row {
+    align-items: start;
+  }
+  .page {
+    display: flex;
+    align-items: center;
+    min-height: 65vh;
+  } 
+  .bubble{
+    width: 100%;
+  }
+}
+.red-outline {
+  border: 2px solid red !important; /* Adjust thickness as needed */
+}
