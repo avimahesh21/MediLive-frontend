@@ -42,7 +42,6 @@ const HeartRateMonitor = () => {
       setPoints([]); // Clear points to start over
     }
     const y = newHeartRate/90 * 73; // Simulate a y-coordinate for demonstration
-    console.log(newHeartRate)
     setPoints(prevPoints => [...prevPoints, `${lastX},${y}`]);
   };
 

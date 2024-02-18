@@ -24,6 +24,16 @@ function App() {
   const [isUserSpeaking, setIsUserSpeaking] = useState(false);
   const silenceTimer = useRef(null);
   let fetched = false;
+
+
+  useEffect(() => {
+    if (trigger) {
+      sendMessage();
+    }
+  }, [trigger]); 
+
+
+
   const {
     transcript,
     listening,
@@ -36,7 +46,7 @@ function App() {
 
   //todo
   let patientName = 'John Doe';
-  let patientData = '{  "patient_name": ' + patientName + ',  "daily_medications": [    {      "name": "Atorvastatin",      "dose": "20mg",      "frequency": "once a day"    },    {      "name": "Lisinopril",      "dose": "10mg",      "frequency": "once a day"    }  ],  "current_medical_issues": [    {      "issue": "Hypertension",      "diagnosis_date": "2023-01-15"    },    {      "issue": "High Cholesterol",      "diagnosis_date": "2023-02-20"    }  ],  "at_risk_data": {    "smoking_status": "Former smoker",    "family_history": [      "Heart Disease",      "Diabetes"    ],    "BMI": 28.5  },  "previous_appointment_data": [    {      "date": "2023-03-10",      "reason": "Routine check-up",      "notes": "Blood pressure slightly elevated. Recommended dietary changes."    },    {      "date": "2023-04-22",      "reason": "Follow-up for hypertension",      "notes": "Blood pressure improved. Continue current medication."    }  ]}'
+  let patientData = '{  "patient_name": "${patientName}",  "daily_medications": [    {      "name": "Atorvastatin",      "dose": "20mg",      "frequency": "once a day"    },    {      "name": "Lisinopril",      "dose": "10mg",      "frequency": "once a day"    }  ],  "current_medical_issues": [    {      "issue": "Hypertension",      "diagnosis_date": "2023-01-15"    },    {      "issue": "High Cholesterol",      "diagnosis_date": "2023-02-20"    }  ],  "at_risk_data": {    "smoking_status": "Former smoker",    "family_history": [      "Heart Disease",      "Diabetes"    ],    "BMI": 28.5  },  "previous_appointment_data": [    {      "date": "2023-03-10",      "reason": "Routine check-up",      "notes": "Blood pressure slightly elevated. Recommended dietary changes."    },    {      "date": "2023-04-22",      "reason": "Follow-up for hypertension",      "notes": "Blood pressure improved. Continue current medication."    }  ]}'
 
   const simulateAlert = (alert) => {
     const newAlert = {
@@ -54,12 +64,67 @@ function App() {
 
     if (trigger && !fetched) {
       fetched = true;
-      let trigDetails = "Fallen to the ground"; //todo
+      let trigDetails = "Fainted"; //todo
       setTriggerDetails(trigDetails);
       fetchFirstQuestion(trigDetails);
       simulateAlert(trigDetails);
     }
   }, [trigger]);
+
+  const patientInfo = JSON.parse(patientData);
+
+  const sendMessage = async () => {
+
+
+    // Construct the message
+    const message = `
+
+    We have an update regarding your patient, ${patientName}. They have unexpectedly fainted and require immediate assistance!
+    ---
+    Current Medical Issues:
+    ${patientInfo.current_medical_issues.map(issue => `- ${issue.issue} - Diagnosed on ${issue.diagnosis_date}`).join('\n')}
+    ---
+    Daily Medications:
+    ${patientInfo.daily_medications.map(med => `- ${med.name} ${med.dose}, ${med.frequency}`).join('\n')}
+    ---
+    At Risk Data:
+    - Smoking Status: ${patientInfo.at_risk_data.smoking_status}
+    - Family History: ${patientInfo.at_risk_data.family_history.join(', ')}
+    - BMI: ${patientInfo.at_risk_data.BMI}
+    ---
+    Previous Appointment Data:
+    ${patientInfo.previous_appointment_data.map(appointment => `- Date: ${appointment.date}, Reason: ${appointment.reason}, Notes: ${appointment.notes}`).join('\n')}
+    
+    Please review this information and advise on any further actions.
+    
+    `;
+
+    
+    try {
+      const response = await fetch('http://localhost:3001/send-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message }) // Assuming the backend only needs the message text
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Message sent:', data.sid);
+        // Handle success - update UI or show a message to the user
+      } else {
+        // Handle errors - response.ok is false if status code is not in the range 200-299
+        const errorData = await response.json();
+        console.error('Failed to send message:', errorData.error);
+        // Update UI to show the error message
+      }
+    } catch (error) {
+      // Catch network errors or issues with the fetch call itself
+      console.error('Network error or issue with fetch:', error);
+      // Update UI to show the network error message
+    }
+  };
 
 
   const fetchFirstQuestion = async (triggerDetails) => {
@@ -206,7 +271,7 @@ function App() {
 
 
       </main>
-
+      
       < Footer />
     </div>
   );
