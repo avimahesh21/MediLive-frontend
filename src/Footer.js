@@ -3,7 +3,7 @@ import HeartRateMonitor from "./HeartRateMonitor";
 
 const Footer = () => {
     return (
-        <footer className="row pt-3 pb-3"> 
+        <footer className="row pb-3"> 
             <div className="col-md-3 text-center">
                 <HeartRateMonitor />
             </div>

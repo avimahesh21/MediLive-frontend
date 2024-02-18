@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './redcross.png';
 import './App.css';
 import WebcamCap from './WebcamCap';
 import Nurse from './Nurse';
@@ -38,6 +38,7 @@ function App() {
 
   const simulateAlert = (alert) => {
     const newAlert = {
+      id: Date.now(), // Ensure a unique ID for each alert
       message: alert + ` at ${new Date().toLocaleTimeString()}`,
     };
     setAlert(newAlert);
@@ -60,6 +61,7 @@ function App() {
 
 
   const fetchFirstQuestion = async (triggerDetails) => {
+
     try {
       const response = await fetch('http://localhost:3001/firstQuestion', {
         method: 'POST',
@@ -74,7 +76,7 @@ function App() {
       createAudioURL(data.buffer);
       setSpeaking(true);
       resetTranscript();
-      startListening();// Start listening after setting the question
+      simulateAlert("Contacted Medical Help");
     } catch (error) {
       console.error('Failed to fetch question:', error);
     }
@@ -136,6 +138,7 @@ function App() {
       audio.onended = () => {
         setSpeaking(false);
         resetTranscript();
+        startListening();
       }
 
       // Ensure that the audio is loaded before attempting to play it
@@ -149,14 +152,18 @@ function App() {
   return (
     <div className="App container-fluid vh-100 d-flex flex-column">
 
-      <header className="row">
-        <div className="col-12">
+      <header className="row align-items-center">
+        <div className="col">
           <div className="d-flex align-items-center py-2">
             <img src={logo} alt="Company Logo" className="me-2" style={{ height: '50px' }} />
             <span className="h4 mb-0">MediLive</span>
           </div>
         </div>
+        <div className="col text-end">
+          <span className="h5 mb-0">Monitoring Patient: {patientName}</span>
+        </div>
       </header>
+
 
       <main className="row flex-grow-1">
         <div className="col-md-8 position-relative d-flex flex-column">
@@ -185,11 +192,11 @@ function App() {
               </div>
             </>
           ) : <WebcamCap />}
-         
+
         </div>
 
         <div className="col-md-4">
-          <h3>Action Log</h3>
+          <h4>Action Log</h4>
           <ActionLog newAlert={alert} />
         </div>
 

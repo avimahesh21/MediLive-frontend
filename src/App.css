@@ -18,7 +18,7 @@ body, html {
   pointer-events: none;
 }
 .question {
-  font-size: 135%;
+  font-size: 115%;
   margin-bottom: 1.5%;
   padding-top: 2%;
 }
@@ -38,10 +38,11 @@ body, html {
 
 .webcam-overlay {
   position: absolute;
+  padding-right: 1%;
   bottom: 0; /* Position at the bottom */
   right: 0; /* Position at the right */
   width: 200px; /* Adjust based on desired size of overlay */
-  height: 150px; /* Adjust based on desired size of overlay */
+  height: 135px; /* Adjust based on desired size of overlay */
 }
 
 .App-header {
