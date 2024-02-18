@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import WebcamCap from './WebcamCap';
-import Nurse from './Nurse'; // Ensure this is correctly imported
+import Nurse from './Nurse'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Typewriter from "typewriter-effect";
 import Footer from './Footer';
@@ -14,21 +14,14 @@ import SpeechRecognition, {
 function App() {
   const [isListening, setIsListening] = useState(true);
   const [trigger, setTrigger] = useState(true);
+  const [triggerDetails, setTriggerDetails] = useState(null);
   const [alert, setAlert] = useState(null);
-
-  // Simulate an alert being received from some external source
-  const simulateAlert = () => {
-    // This is where you would get the actual alert data
-    // For demonstration, we're just creating a new Date string
-    const newAlert = {
-      message: `New alert at ${new Date().toLocaleTimeString()}`,
-    };
-    setAlert(newAlert);
-  };
-  
   const [speaking, setSpeaking] = useState(false);
   const [audioUrl, setAudioUrl] = useState(null);
   const [voiceText, setVoiceText] = useState(null);
+  const [isUserSpeaking, setIsUserSpeaking] = useState(false);
+  const silenceTimer = useRef(null);
+  let fetched = false;
   const {
     transcript,
     listening,
@@ -39,27 +32,46 @@ function App() {
   const startListening = () =>
     SpeechRecognition.startListening({ continuous: true });
 
-    
+  //todo
+  let patientName = 'John Doe';
+  let patientData = '{  "patient_name": ' + patientName + ',  "daily_medications": [    {      "name": "Atorvastatin",      "dose": "20mg",      "frequency": "once a day"    },    {      "name": "Lisinopril",      "dose": "10mg",      "frequency": "once a day"    }  ],  "current_medical_issues": [    {      "issue": "Hypertension",      "diagnosis_date": "2023-01-15"    },    {      "issue": "High Cholesterol",      "diagnosis_date": "2023-02-20"    }  ],  "at_risk_data": {    "smoking_status": "Former smoker",    "family_history": [      "Heart Disease",      "Diabetes"    ],    "BMI": 28.5  },  "previous_appointment_data": [    {      "date": "2023-03-10",      "reason": "Routine check-up",      "notes": "Blood pressure slightly elevated. Recommended dietary changes."    },    {      "date": "2023-04-22",      "reason": "Follow-up for hypertension",      "notes": "Blood pressure improved. Continue current medication."    }  ]}'
+
+  const simulateAlert = (alert) => {
+    const newAlert = {
+      message: alert + ` at ${new Date().toLocaleTimeString()}`,
+    };
+    setAlert(newAlert);
+  };
+
   useEffect(() => {
     if (!browserSupportsSpeechRecognition) {
       console.error("Browser does not support speech recognition.");
       return;
     }
 
-    if (trigger == true) {
-      fetchFirstQuestion();
+    if (trigger && !fetched) {
+      fetched = true;
+      let trigDetails = "Fallen to the ground"; //todo
+      setTriggerDetails(trigDetails);
+      fetchFirstQuestion(trigDetails);
+      simulateAlert(trigDetails);
     }
   }, [trigger]);
 
 
-  const fetchFirstQuestion = async () => {
+  const fetchFirstQuestion = async (triggerDetails) => {
     try {
-      const response = await fetch('http://localhost:3001/firstQuestion');
+      const response = await fetch('http://localhost:3001/firstQuestion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ triggerDetails: triggerDetails, patientData: patientData }),
+      });
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       setVoiceText(data.question);
-      //make audio url
-      //set audio url
+      createAudioURL(data.buffer);
       setSpeaking(true);
       startListening();// Start listening after setting the question
     } catch (error) {
@@ -67,8 +79,16 @@ function App() {
     }
   };
 
-  const [isUserSpeaking, setIsUserSpeaking] = useState(false);
-  const silenceTimer = useRef(null);
+  async function createAudioURL(audioBuffer) {
+    const blob = new Blob(
+      [new Uint8Array(audioBuffer.data)],
+      { type: "audio/mp3" }
+    );
+    const url = URL.createObjectURL(blob);
+    console.log(url);
+    setAudioUrl(url);
+  }
+
   useEffect(() => {
     if (transcript) {
       setIsUserSpeaking(true);
@@ -78,7 +98,7 @@ function App() {
         setIsUserSpeaking(false);
         console.log(transcript)
         fetchFollowUp(transcript);
-      }, 3000); // 4 sec of silence untill it auto submits
+      }, 3500); // 3.5 sec of silence untill it auto submits
     }
   }, [transcript]);
 
@@ -86,26 +106,24 @@ function App() {
   const fetchFollowUp = async (userResponse) => {
     try {
       const response = await fetch('http://localhost:3001/followUp', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userResponse: userResponse }),
-    });
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ patientData: patientData, triggerDetails: triggerDetails, previousQuestion: voiceText, userResponse: userResponse }),
+      });
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       setVoiceText(data.question);
-      //make audio url
-      //set audio url
+      createAudioURL(data.buffer);
       setSpeaking(true);
-      //start lisetning
       setIsListening(true);
       resetTranscript();
     } catch (error) {
       console.error('Failed to fetch question:', error);
     }
   };
-  
+
 
 
   useEffect(() => {
@@ -113,21 +131,20 @@ function App() {
       const audio = new Audio(audioUrl);
       audio.playbackRate = 1.17;
 
-
       // Event handler for when audio stops playing
       audio.onended = () => {
         setSpeaking(false);
-        startListening();
+        resetTranscript();
       }
+
       // Ensure that the audio is loaded before attempting to play it
       audio.addEventListener("canplaythrough", () => {
         setSpeaking(true);
-        //SpeechRecognition.stopListening();
         audio.play();
       });
     }
   }, [audioUrl]);
-  
+
   return (
     <div className="App container-fluid vh-100 d-flex flex-column">
 
@@ -147,7 +164,7 @@ function App() {
               <Nurse speaking={speaking} />
               <div className="question text-center mt-auto">
                 <Typewriter
-                  key={voiceText} // Add this line
+                  key={voiceText}
                   options={{
                     delay: 20,
                   }}
@@ -169,7 +186,6 @@ function App() {
 
         <div className="col-md-4">
           <h1>Action Log</h1>
-          <button onClick={simulateAlert}>Simulate Action</button>
           <ActionLog newAlert={alert} />
         </div>
 
