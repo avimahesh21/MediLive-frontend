@@ -15,6 +15,11 @@
       overflow-y: hidden;
     }
   }
+
+  .player-wrapper {
+    height: 300px; /* Adjust based on the actual size needed */
+  }
+  
   
   .react-player {
     border-radius: 1rem;

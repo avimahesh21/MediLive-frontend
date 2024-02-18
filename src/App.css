@@ -5,6 +5,14 @@
     color: #fff; /* Adjusts the text color for better readability against the dark background */
 }
 
+body, html {
+  background-color: #0e1117; /* Dark background */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  color: #fff; /* Set default text color to white */
+}
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -21,10 +29,17 @@
   }
 }
 
+.nurse-container {
+  position: relative;
+  /* Ensure it's large enough to hold the Nurse component and overlay */
+  height: 100%; /* Adjust based on your layout */
+  width: 100%; /* Adjust based on your layout */
+}
+
 .webcam-overlay {
   position: absolute;
-  bottom: 8%; /* Adjust as needed */
-  right: 2%; /* Adjust as needed */
+  bottom: 0; /* Position at the bottom */
+  right: 0; /* Position at the right */
   width: 200px; /* Adjust based on desired size of overlay */
   height: 150px; /* Adjust based on desired size of overlay */
 }
