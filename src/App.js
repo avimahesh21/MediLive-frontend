@@ -1,4 +1,5 @@
-import logo from './crosslogo.png';
+import logo from './visioncare-logo.png'; //'./crosslogo.png';
+import patientProfilePic from './patientProfilePic.jpg';
 import './App.css';
 import WebcamCap from './WebcamCap';
 import Nurse from './Nurse';
@@ -237,14 +238,28 @@ function App() {
   console.log(trigger)
   return (
     <div className="App container-fluid vh-100 d-flex flex-column">
-      <header className="row align-items-center">
-        <div className="col">
+
+      {/* Header */}
+      {/* <header className="row align-items-center">
+        <div className="col bg-gray-800">
           <div className="d-flex align-items-center py-2">
             <img src={logo} alt="Company Logo" className="me-2" style={{ height: '50px' }} />
             <span className="h4 mb-0">MediLive</span>
           </div>
         </div>
         <div className="col text-end">
+        </div>
+      </header> */}
+      <header className="bg-gray-800 w-full">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <img src={logo} alt="Company Logo" className="h-10 mr-2" />
+            <span className="text-white text-lg font-medium">MediLive</span>
+          </div>
+          <div className="flex items-center">
+            <img src={patientProfilePic} alt="Patient Profile" className="h-10 w-10 rounded-full mr-2" />
+            <span className="text-white text-lg font-medium">Patient Name</span>
+          </div>
         </div>
       </header>
 
