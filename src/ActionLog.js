@@ -6,15 +6,15 @@ const AlertSystem = ({ newAlert }) => {
   // Listener for new alerts (could be a WebSocket or similar)
   useEffect(() => {
     if (newAlert) {
-      setAlerts(previousAlerts => [newAlert, ...previousAlerts]);
+      setAlerts((previousAlerts) => [newAlert, ...previousAlerts]);
     }
-  }, [newAlert]);
+  }, [newAlert]);  
 
   return (
     <div style={{ overflowY: 'auto', maxHeight: '400px' }}>
-      {alerts.map((alert, index) => (
+      {alerts.map((alert) => (
         <div 
-          key={index} 
+        key={alert.id} 
           style={{ 
             padding: '10px', 
             borderBottom: '1px solid #ccc',
