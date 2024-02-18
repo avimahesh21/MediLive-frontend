@@ -10,6 +10,7 @@ import React, { useState, useEffect, useRef } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import ArduinoData from './ArduinoData';
 
 function App() {
   const [isListening, setIsListening] = useState(true);
@@ -191,6 +192,11 @@ function App() {
         <div className="col-md-4">
           <h3>Action Log</h3>
           <ActionLog newAlert={alert} />
+        </div>
+
+
+        <div>
+          <ArduinoData />
         </div>
 
       </main>
