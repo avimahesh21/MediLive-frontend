@@ -30,7 +30,7 @@ function App() {
     if (trigger) {
       sendMessage();
     }
-  }, [trigger]); 
+  }, [trigger]);
 
 
 
@@ -99,7 +99,7 @@ function App() {
     
     `;
 
-    
+
     try {
       const response = await fetch('http://localhost:3001/send-message', {
         method: 'POST',
@@ -108,7 +108,7 @@ function App() {
         },
         body: JSON.stringify({ message }) // Assuming the backend only needs the message text
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         console.log('Message sent:', data.sid);
@@ -128,24 +128,25 @@ function App() {
 
 
   const fetchFirstQuestion = async (triggerDetails) => {
-
-    try {
-      const response = await fetch('http://localhost:3001/firstQuestion', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ triggerDetails: triggerDetails, patientData: patientData }),
-      });
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-      setVoiceText(data.question);
-      createAudioURL(data.buffer);
-      setSpeaking(true);
-      resetTranscript();
-      simulateAlert("Contacted Medical Help");
-    } catch (error) {
-      console.error('Failed to fetch question:', error);
+    if (!speaking) {
+      try {
+        const response = await fetch('http://localhost:3001/firstQuestion', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ triggerDetails: triggerDetails, patientData: patientData }),
+        });
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        setVoiceText(data.question);
+        createAudioURL(data.buffer);
+        setSpeaking(true);
+        resetTranscript();
+        simulateAlert("Contacted Medical Help");
+      } catch (error) {
+        console.error('Failed to fetch question:', error);
+      }
     }
   };
 
@@ -174,31 +175,41 @@ function App() {
 
 
   const fetchFollowUp = async (userResponse) => {
-    try {
-      const response = await fetch('http://localhost:3001/followUp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ patientData: patientData, triggerDetails: triggerDetails, previousQuestion: voiceText, userResponse: userResponse }),
-      });
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-      setVoiceText(data.question);
-      createAudioURL(data.buffer);
-      setSpeaking(true);
-      resetTranscript();
-      setIsListening(true);
-    } catch (error) {
-      console.error('Failed to fetch question:', error);
+    if (!speaking) {
+      try {
+        const response = await fetch('http://localhost:3001/followUp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ patientData: patientData, triggerDetails: triggerDetails, previousQuestion: voiceText, userResponse: userResponse }),
+        });
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        setVoiceText(data.question);
+        createAudioURL(data.buffer);
+        setSpeaking(true);
+        resetTranscript();
+        setIsListening(true);
+      } catch (error) {
+        console.error('Failed to fetch question:', error);
+      }
     }
   };
 
 
 
   useEffect(() => {
+    let audio;
+
     if (audioUrl) {
-      const audio = new Audio(audioUrl);
+      // Stop any currently playing audio
+      if (audio && !audio.ended) {
+        audio.pause();
+        audio.currentTime = 0; // Optionally reset the audio playback to the start
+      }
+
+      audio = new Audio(audioUrl);
       audio.playbackRate = 1.17;
 
       // Event handler for when audio stops playing
@@ -206,15 +217,23 @@ function App() {
         setSpeaking(false);
         resetTranscript();
         startListening();
-      }
+      };
 
       // Ensure that the audio is loaded before attempting to play it
       audio.addEventListener("canplaythrough", () => {
         setSpeaking(true);
-        audio.play();
+        audio.play().catch((e) => console.error("Error playing audio:", e));
       });
     }
-  }, [audioUrl]);
+
+    // Cleanup function to stop audio when the component unmounts or audioUrl changes
+    return () => {
+      if (audio) {
+        audio.pause();
+      }
+    };
+  }, [audioUrl, resetTranscript]);
+
   console.log(trigger)
   return (
     <div className="App container-fluid vh-100 d-flex flex-column">
@@ -226,7 +245,6 @@ function App() {
           </div>
         </div>
         <div className="col text-end">
-          <p className="mb-0">Monitoring Patient: {patientName}</p>
         </div>
       </header>
 
@@ -271,7 +289,7 @@ function App() {
 
 
       </main>
-      
+
       < Footer />
     </div>
   );
