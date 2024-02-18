@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import "./App.css"
 
 const HeartRateMonitor = () => {
 
@@ -54,10 +55,13 @@ const HeartRateMonitor = () => {
 
   return (
     <div className="heart-rate">
-      <svg version="1.0" x="0px" y="0px" width="100px" height="33px" viewBox="0 0 150 73">
-        <polyline fill="none" stroke="#009B9E" stroke-width="3" stroke-miterlimit="10" points={points.join(' ')} />
+      <h4>Heart Rate (BPM)</h4>
+      <div className="mx-auto pt-3"></div>
+      <svg version="1.0" x="0px" y="0px" width="150px" height="83px" viewBox="0 0 150 73">
+        <polyline fill="none" stroke="#AD1C1C" stroke-width="3" stroke-miterlimit="10" points={points.join(' ')} />
       </svg>
-    </div>
+      </div>
+    
   );
 };
 

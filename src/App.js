@@ -30,7 +30,8 @@ function App() {
 
   useEffect(() => {
     if (trigger) {
-      //sendMessage();
+      sendMessage();
+      simulateAlert("Sent Info Text to Paramedics");
     }
   }, [trigger]);
 
@@ -259,7 +260,7 @@ function App() {
           </div>
           <div className="flex items-center">
             <img src={patientProfilePic} alt="Patient Profile" className="h-10 w-10 rounded-full mr-2" />
-            <span className="text-white text-lg font-medium">Patient Name</span>
+            <span className="text-white text-lg font-medium">{patientName}</span>
           </div>
         </div>
       </header>
@@ -279,7 +280,7 @@ function App() {
                   </div>
                 )}
               </div>
-              <div className="question text-center mt-auto">
+              <div className="question text-center">
                 <Typewriter
                   key={voiceText}
                   options={{

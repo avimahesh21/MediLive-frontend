@@ -38,6 +38,36 @@ html {
   }
 }
 
+.fade-enter {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.fade-enter-active {
+  opacity: 1;
+}
+
+.fade-exit {
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.fade-exit-active {
+  opacity: 0;
+}
+
+
+.heart-rate {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This centers the children horizontally in the container */
+  justify-content: center; /* This centers the children vertically in the container, if needed */
+  text-align: center; /* Ensures text is also centered, useful for the <h4> */
+  width: 100%; /* Ensures the div takes full width of its parent, adjust as necessary */
+  padding-top: 3%;
+}
+
+
 .nurse-container {
   position: relative;
   height: 100%;
@@ -50,7 +80,7 @@ html {
 
 .webcam-overlay {
   position: absolute;
-  bottom: 0;
+  bottom: 3%;
   right: 1%;
   width: 22%;
   height: 32%;
