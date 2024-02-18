@@ -10,6 +10,7 @@ import React, { useState, useEffect, useRef } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import ArduinoData from './ArduinoData';
 import Face from './Face'
 
 function App() {
@@ -202,6 +203,7 @@ function App() {
           <h4>Action Log</h4>
           <ActionLog newAlert={alert} />
         </div>
+
 
       </main>
 

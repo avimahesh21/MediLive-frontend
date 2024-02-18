@@ -1,0 +1,243 @@
+.resultsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  animation: fadeIn 3s;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.congratulations {
+  padding: 1%;
+  text-align: left;
+  font-size: 250%;
+  font-weight: bold;
+  color: #353535;
+  padding-bottom: 0;
+}
+
+.results {
+  padding: 1%;
+  text-align: left;
+  font-size: 200%;
+  font-weight: bold;
+  color: #353535;
+  padding-top: 0;
+}
+
+.subTitle {
+  margin-bottom: 1rem;
+  padding-left: 1.2%;
+  text-align: left;
+  font-size: 120%;
+  color: #353535;
+}
+
+.round {
+  border-radius: 1rem;
+}
+
+.score {
+  font-size: 130%;
+  font-weight: bold;
+  text-align: center;
+}
+
+.scColumn {
+  column-width: auto;
+}
+
+.videoTags {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.videoTags span {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.indicator {
+  margin: 0 auto;
+  padding: 0;
+  list-style-type: none;
+}
+
+.indicator *,
+.indicator::before {
+  box-sizing: border-box;
+}
+
+/* indicator STYLES
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.indicator {
+  position: relative;
+  width: 13rem;
+  height: 6.5rem;
+  overflow: hidden;
+}
+
+.indicator::before,
+.indicator::after {
+  position: absolute;
+}
+
+.indicator::before {
+  content: "";
+  width: inherit;
+  height: inherit;
+  border: 45px solid rgba(211, 211, 211, 0.3);
+  border-bottom: none;
+  border-top-left-radius: 175px;
+  border-top-right-radius: 175px;
+}
+
+.indicator span.bar {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  border: 45px solid;
+  border-top: none;
+  border-bottom-left-radius: 175px;
+  border-bottom-right-radius: 175px;
+  transform-origin: 50% 0;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  animation-fill-mode: forwards;
+  animation-duration: 0.4s;
+  animation-timing-function: linear;
+  z-index: 4;
+  border-color: green;
+  animation-name: rotate-one;
+}
+
+.indicator span.result {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: cadetblue;
+}
+
+span.result span:nth-child(1) {
+  font-size: 2rem;
+}
+
+.tips {
+  padding-left: 1.5rem;
+}
+
+.question-header {
+  text-align: center;
+  font-size: 210%;
+  font-weight: bold;
+  color: #353535;
+  padding: 0;
+  margin: 0;
+  /* background-color: rgb(219, 219, 219); */
+  border-radius: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.quest {
+  padding-left: 0;
+  padding-top: 1rem;
+  text-align: left;
+  font-size: 110%;
+  color: #353535;
+}
+
+.col {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.row {
+  padding-left: 0;
+}
+
+.item {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding-right: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 0.35em 0.35em rgba(0, 0, 0, 0.1);
+}
+
+@keyframes rotate-one {
+  0% {
+    transform: rotate(0);
+  }
+}
+
+/* ResultsScreen.css */
+
+/* Add the following styles to move the score indicator to the right side */
+.alert-success {
+  position: relative;
+}
+
+.indicator {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+/* Keep the rest of your styles intact */
+
+.answerTitle {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.btn-custom {
+  color: #fdfdfd !important;
+  background-color: #353535 !important;
+  border-width: 0rem !important;
+  font-weight: bold !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.btn-custom:hover {
+  background-color: #232323 !important;
+}
+
+@media (max-width: 768px) {
+  .vert {
+    flex-direction: column; /* Stack columns on smaller screens */
+  }
+  .item {
+    flex-direction: column;
+  }
+
+  /* This CSS will apply to screens with a maximum width of 767px (typical for mobile devices) */
+  .col-10 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .col-2 {
+    width: 100% !important;
+  }
+  /* Add any other necessary styles for mobile layout */
+}
