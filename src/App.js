@@ -152,10 +152,6 @@ function App() {
   console.log(trigger)
   return (
     <div className="App container-fluid vh-100 d-flex flex-column">
-      <Face trigger={trigger} setTrigger={setTrigger} />
-      <header className="row">
-        <div className="col-12">
-
       <header className="row align-items-center">
         <div className="col">
           <div className="d-flex align-items-center py-2">
@@ -164,7 +160,7 @@ function App() {
           </div>
         </div>
         <div className="col text-end">
-          <span className="h5 mb-0">Monitoring Patient: {patientName}</span>
+          <p className="mb-0">Monitoring Patient: {patientName}</p>
         </div>
       </header>
 
@@ -177,7 +173,7 @@ function App() {
                 <Nurse speaking={speaking} />
                 {trigger && (
                   <div className="webcam-overlay">
-                    <WebcamCap />
+                    <WebcamCap></WebcamCap>
                   </div>
                 )}
               </div>
@@ -195,7 +191,10 @@ function App() {
                 />
               </div>
             </>
-          ) : <WebcamCap />}
+          ) : <div style={{ width: "50%" }}>
+            <Face trigger={trigger} setTrigger={setTrigger} />
+          </div>
+          }
 
         </div>
 

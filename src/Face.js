@@ -42,6 +42,7 @@ function Face(props){
 
   const faceMyDetect = () => {
     setInterval(async () => {
+      if (!videoRef.current || videoRef.current.paused || videoRef.current.ended) return;
       const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks()
   
       // DRAW YOU FACE IN WEBCAM
@@ -78,7 +79,6 @@ function Face(props){
 
   return (
 <div className="myapp">
-  <h1>Face Detection</h1>
   <div className="video-container">
     <video crossOrigin="anonymous" ref={videoRef} autoPlay></video>
     <canvas ref={canvasRef} width="940" height="650" className="appcanvas" />
