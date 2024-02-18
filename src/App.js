@@ -10,10 +10,11 @@ import React, { useState, useEffect, useRef } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import Face from './Face'
 
 function App() {
   const [isListening, setIsListening] = useState(true);
-  const [trigger, setTrigger] = useState(true);
+  const [trigger, setTrigger] = useState(false);
   const [triggerDetails, setTriggerDetails] = useState(null);
   const [alert, setAlert] = useState(null);
   const [speaking, setSpeaking] = useState(false);
@@ -145,10 +146,10 @@ function App() {
       });
     }
   }, [audioUrl]);
-
+  console.log(trigger)
   return (
     <div className="App container-fluid vh-100 d-flex flex-column">
-
+      <Face trigger={trigger} setTrigger={setTrigger} />
       <header className="row">
         <div className="col-12">
           <div className="d-flex align-items-center py-2">
