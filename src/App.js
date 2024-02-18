@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import WebcamCap from './WebcamCap';
-import Nurse from './Nurse'; 
+import Nurse from './Nurse';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Typewriter from "typewriter-effect";
 import Footer from './Footer';
@@ -73,6 +73,7 @@ function App() {
       setVoiceText(data.question);
       createAudioURL(data.buffer);
       setSpeaking(true);
+      resetTranscript();
       startListening();// Start listening after setting the question
     } catch (error) {
       console.error('Failed to fetch question:', error);
@@ -98,7 +99,7 @@ function App() {
         setIsUserSpeaking(false);
         console.log(transcript)
         fetchFollowUp(transcript);
-      }, 3500); // 3.5 sec of silence untill it auto submits
+      }, 2500); // 3.5 sec of silence untill it auto submits
     }
   }, [transcript]);
 
@@ -117,8 +118,8 @@ function App() {
       setVoiceText(data.question);
       createAudioURL(data.buffer);
       setSpeaking(true);
-      setIsListening(true);
       resetTranscript();
+      setIsListening(true);
     } catch (error) {
       console.error('Failed to fetch question:', error);
     }
@@ -161,7 +162,14 @@ function App() {
         <div className="col-md-8 position-relative d-flex flex-column">
           {trigger ? (
             <>
-              <Nurse speaking={speaking} />
+              <div className="nurse-container">
+                <Nurse speaking={speaking} />
+                {trigger && (
+                  <div className="webcam-overlay">
+                    <WebcamCap />
+                  </div>
+                )}
+              </div>
               <div className="question text-center mt-auto">
                 <Typewriter
                   key={voiceText}
@@ -177,15 +185,11 @@ function App() {
               </div>
             </>
           ) : <WebcamCap />}
-          {trigger && (
-            <div className="webcam-overlay">
-              <WebcamCap />
-            </div>
-          )}
+         
         </div>
 
         <div className="col-md-4">
-          <h1>Action Log</h1>
+          <h3>Action Log</h3>
           <ActionLog newAlert={alert} />
         </div>
 
