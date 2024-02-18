@@ -1,4 +1,4 @@
-import logo from './redcross.png';
+import logo from './crosslogo.png';
 import './App.css';
 import WebcamCap from './WebcamCap';
 import Nurse from './Nurse';
