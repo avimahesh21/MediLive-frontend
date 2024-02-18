@@ -49,13 +49,13 @@ function Face(props) {
       }
 
       faceapi.matchDimensions(canvasRef.current, {
-        width: 940,
-        height: 650,
+        width: 708,
+        height: 490,
       });
 
       const resizedDetections = faceapi.resizeResults(detections, {
-        width: 940,
-        height: 650,
+        width: 708,
+        height: 490,
       });
 
       faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
@@ -66,7 +66,7 @@ function Face(props) {
         // Assuming there's only one face detected and taking the first detection
         const face = detections[0];
         const midY = (face.detection.box.top + face.detection.box.bottom) / 2;
-        const videoHeight = 650; // replace with videoRef.current.offsetHeight if dynamic
+        const videoHeight = 490; // replace with videoRef.current.offsetHeight if dynamic
   
         if (midY > videoHeight / 2) {
           console.log('Fallen'); // The middle of the face is in the bottom half
@@ -82,7 +82,7 @@ function Face(props) {
 <div className="myapp">
   <div className="video-container">
     <video crossOrigin="anonymous" ref={videoRef} autoPlay></video>
-    <canvas ref={canvasRef} width="940" height="650" className="appcanvas" />
+    <canvas ref={canvasRef} width="708" height="490" className="appcanvas" />
   </div>
 </div>
     )

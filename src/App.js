@@ -28,7 +28,7 @@ function App() {
 
   useEffect(() => {
     if (trigger) {
-      sendMessage();
+      //sendMessage();
     }
   }, [trigger]);
 
@@ -275,7 +275,7 @@ function App() {
                 />
               </div>
             </>
-          ) : <div style={{ width: "50%" }}>
+          ) : <div className='faceStyle'>
             <Face trigger={trigger} setTrigger={setTrigger} />
           </div>
           }

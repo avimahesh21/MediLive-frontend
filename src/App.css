@@ -1,15 +1,23 @@
 .App {
   text-align: center;
-    background-color: #0e1117; /* Sets the background color of the app */
-    min-height: 100vh; /* Makes sure the app fills at least the full height of the viewport */
-    color: #fff; /* Adjusts the text color for better readability against the dark background */
+  background-color: #0e1117;
+  /* Sets the background color of the app */
+  min-height: 100vh;
+  /* Makes sure the app fills at least the full height of the viewport */
+  color: #fff;
+  /* Adjusts the text color for better readability against the dark background */
 }
 
-body, html {
-  background-color: #0e1117; /* Dark background */
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  color: #fff; /* Set default text color to white */
+body,
+html {
+  background-color: #0e1117;
+  /* Dark background */
+  margin: 0;
+  /* Remove default margin */
+  padding: 0;
+  /* Remove default padding */
+  color: #fff;
+  /* Set default text color to white */
 }
 
 
@@ -17,6 +25,7 @@ body, html {
   height: 40vmin;
   pointer-events: none;
 }
+
 .question {
   font-size: 115%;
   margin-bottom: 1.5%;
@@ -31,19 +40,23 @@ body, html {
 
 .nurse-container {
   position: relative;
-  /* Ensure it's large enough to hold the Nurse component and overlay */
-  height: 100%; /* Adjust based on your layout */
-  width: 100%; /* Adjust based on your layout */
+  height: 100%;
+  width: 100%;
+}
+
+.faceStyle{
+  padding-top: 2%;
 }
 
 .webcam-overlay {
   position: absolute;
-  padding-right: 1%;
-  bottom: 0; /* Position at the bottom */
-  right: 0; /* Position at the right */
-  width: 200px; /* Adjust based on desired size of overlay */
-  height: 135px; /* Adjust based on desired size of overlay */
+  bottom: 0;
+  right: 1%;
+  width: 22%;
+  height: 32%;
+  border-radius: 15px;
 }
+
 
 .App-header {
   background-color: #282c34;
@@ -64,6 +77,7 @@ body, html {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -71,5 +85,6 @@ body, html {
 
 /* Add a grey light line above the footer */
 footer .col-12 {
-  border-top: 1px solid #8d838354; /* Light grey border */
+  border-top: 1px solid #8d838354;
+  /* Light grey border */
 }
