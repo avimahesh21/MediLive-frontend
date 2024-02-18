@@ -13,6 +13,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import ArduinoData from './ArduinoData';
 import Face from './Face'
+import HeartRateMonitor from './HeartRateMonitor';
 
 function App() {
   const [isListening, setIsListening] = useState(true);
@@ -238,8 +239,6 @@ function App() {
   console.log(trigger)
   return (
     <div className="App container-fluid vh-100 d-flex flex-column">
-
-      {/* Header */}
       {/* <header className="row align-items-center">
         <div className="col bg-gray-800">
           <div className="d-flex align-items-center py-2">
@@ -250,6 +249,8 @@ function App() {
         <div className="col text-end">
         </div>
       </header> */}
+
+      {/* Header */}
       <header className="bg-gray-800 w-full">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -265,6 +266,8 @@ function App() {
 
 
       <main className="row flex-grow-1">
+
+        {/* Video/Nurse */}
         <div className="col-md-8 position-relative d-flex flex-column">
           {trigger ? (
             <>
@@ -294,18 +297,23 @@ function App() {
             <Face trigger={trigger} setTrigger={setTrigger} />
           </div>
           }
-
-        </div>
-
-        <div className="col-md-4">
+        </div> 
+        
+        {/* Action Log */}
+        <div className="col-md-4 p-5">
           <h4>Action Log</h4>
-          <ActionLog newAlert={alert} />
+          <div className="p-2.5 mb-2.5 rounded-md">
+            <ActionLog newAlert={alert} />
+          </div>
+
+          <div>
+            < HeartRateMonitor />
+          </div>
+          
         </div>
 
 
       </main>
-
-      < Footer />
     </div>
   );
 }

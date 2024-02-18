@@ -15,13 +15,7 @@ const AlertSystem = ({ newAlert }) => {
       {alerts.map((alert) => (
         <div 
         key={alert.id} 
-          style={{ 
-            padding: '10px', 
-            borderBottom: '1px solid #ccc',
-            marginBottom: '10px', // Adds space between alerts
-            backgroundColor: '#222222', // Optional: adds a background color to each alert
-            borderRadius: '4px', // Optional: rounds the corners of the alert boxes
-          }}
+        className="p-2.5 mb-2.5 bg-cyan-950 rounded-md"
         >
           {alert.message}
         </div>

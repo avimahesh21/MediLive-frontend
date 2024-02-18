@@ -7,8 +7,10 @@ const Footer = () => {
             <div className="col-md-3 text-center">
                 <HeartRateMonitor />
             </div>
-            <div className="col-md-6">
-            </div>
+            
+            {/*<div className="col-md-6">
+            </div>*/}
+            
         </footer>
     );
 }
